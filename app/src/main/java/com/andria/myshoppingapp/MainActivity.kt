@@ -5,8 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
-import com.andria.myshoppingapp.components.CatalogueSurfaceView
-import com.andria.myshoppingapp.components.MainScreen
+import com.andria.myshoppingapp.components.MainScreenView
 import com.andria.myshoppingapp.ui.theme.MyShoppingAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,10 +25,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             MyShoppingAppTheme {
                 viewModel.viewState.collectAsState().let { state ->
-                    MainScreen(state = state.value)
+                    MainScreenView(state = state.value)
                 }
             }
         }
     }
-
 }

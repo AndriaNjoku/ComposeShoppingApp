@@ -37,7 +37,7 @@ import com.andria.myshoppingapp.model.ViewState
 const val KEY_ROUTE = "route"
 
 @Composable
-fun MainScreen(
+fun MainScreenView(
     state: ViewState<List<Product>>,
 ) {
     val navController = rememberNavController()
@@ -63,7 +63,7 @@ fun MainScreen(
             modifier = Modifier.padding(it)
         ) {
             composable(Screen.Catalogue.route) {
-                CatalogueSurfaceView(state = state) { catalogItem ->
+                      CatalogueSurfaceView(state = state) { catalogItem ->
                     rememberProduct.value = catalogItem
                     navController.navigate(Screen.ProductDetail.route)
                 }
@@ -103,7 +103,7 @@ fun MainScreen(
                     ) {
 
                         Text(
-                            text = title,
+                            text = Screen.WishList.title,
                             fontSize = 30.sp,
                             modifier = Modifier.padding(10.dp)
                         )
@@ -131,7 +131,7 @@ fun MainScreen(
                     ) {
 
                         Text(
-                            text = title,
+                            text = Screen.Basket.title,
                             fontSize = 30.sp,
                             modifier = Modifier.padding(10.dp)
                         )
@@ -170,7 +170,7 @@ fun BottomNavigationView(navController: NavController) {
 
         items.forEach { screen ->
             NavigationBarItem(
-                icon = { Icon(screen.icon!!, contentDescription = null) }, // Replace with your icon
+                icon = { Icon(screen.icon!!, contentDescription = null) },
                 label = { Text(screen.route) },
                 selected = currentRoute == screen.route,
                 onClick = {
@@ -196,5 +196,5 @@ fun MainScreenPreview() {
         productId = "1"
     )
     val mockState = ViewState.Success(listOf(mockProduct))
-    MainScreen(state = mockState)
+    MainScreenView(state = mockState)
 }

@@ -1,44 +1,47 @@
 package com.andria.myshoppingapp
 
-import com.andria.myshoppingapp.CatalogueViewModel
-import com.andria.myshoppingapp.model.ProductList
 import com.andria.myshoppingapp.api.ClothesStoreApi
 import com.andria.myshoppingapp.model.Product
 import com.andria.myshoppingapp.model.ViewState
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import retrofit2.Response
 
 class CatalogueViewModelTest {
 
     private lateinit var viewModel: CatalogueViewModel
     private val api: ClothesStoreApi = mockk()
+    private val repository: ClothesRepository = mockk()
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Before
     fun setup() {
-        viewModel = CatalogueViewModel(api)
+        viewModel = CatalogueViewModel(
+            repository,
+            testDispatcher
+        )
     }
 
+
     @Test
-    fun `fetchCatalogue returns success`() = runBlockingTest {
+    fun `fetchCatalogue returns success`() = runBlocking {
         val mockProducts = listOf(Product("Shirt", "shirt.jpg", 20.0, 10, "clothes", null, "1"))
-        coEvery { api.getCatalogue() } returns Response.success(ProductList(mockProducts))
+        coEvery { repository.fetchClothes() } returns Result.success(mockProducts)
 
         viewModel.fetchCatalogue()
 
-        assertEquals(mockProducts, viewModel.viewState.value)
         assertEquals(ViewState.Success(mockProducts), viewModel.viewState.first())
     }
 
     @Test
-    fun `fetchCatalogue returns error`() = runBlockingTest {
+    fun `fetchCatalogue returns error`() = runBlocking {
         val error = Error("Failed to fetch catalogue")
-        coEvery { api.getCatalogue() } throws error
+        coEvery { repository.fetchClothes() } returns Result.failure(error)
 
         viewModel.fetchCatalogue()
 

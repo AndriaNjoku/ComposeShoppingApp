@@ -1,6 +1,8 @@
 package com.andria.myshoppingapp.di
 
 import com.andria.myshoppingapp.CatalogueViewModelFactory
+import com.andria.myshoppingapp.ClothesRepository
+import com.andria.myshoppingapp.ClothesRepositoryImpl
 import com.andria.myshoppingapp.api.ClothesStoreApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -8,6 +10,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -30,8 +34,17 @@ class AppModule {
     }
 
     @Provides
-    fun provideCatalogueViewModelFactory(api: ClothesStoreApi): CatalogueViewModelFactory {
-        return CatalogueViewModelFactory(api)
+    fun provideClothesRepository(api: ClothesStoreApi): ClothesRepository {
+        return ClothesRepositoryImpl(api)
     }
 
+    @Provides
+    fun provideCatalogueViewModelFactory(
+        repo: ClothesRepository,
+    ): CatalogueViewModelFactory {
+        return CatalogueViewModelFactory(
+            repo,
+            Dispatchers.Main
+        )
+    }
 }

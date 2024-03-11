@@ -33,9 +33,12 @@ fun CatalogueSurfaceView(
             LoadingView()
         }
 
-
         is ViewState.Error -> {
-            // Show error state
+            Text(
+                text = "Oops! No products found. Please try again later.",
+                fontSize = 20.sp,
+                modifier = Modifier.padding(10.dp)
+            )
         }
 
         is ViewState.Success -> {
@@ -50,18 +53,28 @@ fun CatalogueSurfaceView(
 
                     Text(text = "Catalogue", fontSize = 30.sp, modifier = Modifier.padding(10.dp))
 
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        verticalArrangement = Arrangement.spacedBy(30.dp),
-                        horizontalArrangement = Arrangement.spacedBy(30.dp),
-                    ){
-                        items(state.data.size) { index ->
-                            val item = state.data[index]
+                    if (state.data.isEmpty()) {
+                        Text(
+                            text = "Oops! No products found. Please try again later.",
+                            fontSize = 20.sp,
+                            modifier = Modifier.padding(10.dp)
+                        )
+                    } else {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            verticalArrangement = Arrangement.spacedBy(30.dp),
+                            horizontalArrangement = Arrangement.spacedBy(30.dp),
+                        ) {
+                            items(state.data.size) { index ->
+                                val item = state.data[index]
 
-                            ProductDetailCardView(
-                                modifier = modifier.height(220.dp).background(color = Color.White).padding(0.dp),
-                                item = item,
-                                onItemClicked = onItemClicked)
+                                ProductDetailCardView(
+                                    modifier = modifier.height(220.dp)
+                                        .background(color = Color.White).padding(0.dp),
+                                    item = item,
+                                    onItemClicked = onItemClicked
+                                )
+                            }
                         }
                     }
                 }
@@ -129,6 +142,18 @@ fun CatalogueScreenPreview() {
 
         }
     )
+}
 
+@Preview(showBackground = true)
+@Composable
+fun CatalogueScreenPreviewNoProducts() {
+    CatalogueSurfaceView(
+        state = ViewState.Success(
+            emptyList()
 
+            ),
+        onItemClicked = {
+
+        }
+    )
 }

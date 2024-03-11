@@ -58,7 +58,6 @@ fun CloseButton(onClick: () -> Unit) {
     }
 }
 
-
 @Composable
 fun ProductDetailCardView(
     modifier: Modifier = Modifier,
@@ -95,7 +94,6 @@ fun ProductDetailCardView(
                             textAlign = TextAlign.Start
                         )
                     }
-
 
                 Box(
                     modifier = Modifier
@@ -140,9 +138,6 @@ fun ProductDetailCardView(
                         }
                     }
                 }
-
-
-
             }
         }
 }

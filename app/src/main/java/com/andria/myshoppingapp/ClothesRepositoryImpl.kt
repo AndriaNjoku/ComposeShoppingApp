@@ -8,12 +8,12 @@ class ClothesRepositoryImpl @Inject constructor(
     private val api: ClothesStoreApi,
 ) : ClothesRepository {
 
-    override suspend fun fetchClothes(): List<Product>? {
+    override suspend fun fetchClothes(): Result<List<Product>> {
         val response = api.getCatalogue()
-        if (response.isSuccessful) {
-            return response.body()?.products
+        return if (response.isSuccessful) {
+            Result.success(response.body()?.products?: emptyList())
         } else {
-            throw Exception("Error fetching clothes")
+            Result.failure(Exception("Error fetching clothes"))
         }
     }
 }

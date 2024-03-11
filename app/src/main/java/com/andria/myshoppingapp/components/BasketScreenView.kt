@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andria.myshoppingapp.model.Product
@@ -54,4 +55,16 @@ fun BasketScreenView(
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewBasketScreenView() {
+val product = Product( "1", "T-shirt", 10.0, 5, "t-shirt", 9.0, "t-shirt"   )
+    BasketScreenView(
+        modifier = Modifier,
+        products = listOf(product),
+        removeFromBag = {},
+        onCheckout = {}
+    )
 }
