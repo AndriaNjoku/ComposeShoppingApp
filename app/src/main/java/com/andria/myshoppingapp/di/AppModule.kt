@@ -10,7 +10,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -44,7 +43,7 @@ class AppModule {
     ): CatalogueViewModelFactory {
         return CatalogueViewModelFactory(
             repo,
-            Dispatchers.Main
+            Dispatchers.IO
         )
     }
 }
