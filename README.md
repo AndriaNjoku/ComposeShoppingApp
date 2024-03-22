@@ -40,14 +40,3 @@ The application follows a robust and maintainable architecture with the followin
 
 After installation, you can run the app on an emulator or a real device connected to your system. This application is designed to provide a seamless online shopping experience with a user-friendly interface.
 
-## Testing
-
-[Provide instructions on how to run your tests here]
-
-## Contributing
-
-Contributions are welcome. Please open an issue first to discuss what you would like to change. Please ensure to follow the code style used throughout the project.
-
-## License
-
-[Specify your license here]
