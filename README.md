@@ -1,42 +1,65 @@
 # Compose Shopping App
 
-This is a shopping application built with Kotlin and Android Jetpack Compose. The application provides a modern and intuitive user interface for an online shopping experience. It allows users to browse through a variety of products, add them to a shopping cart, and proceed to checkout.
+An Android shopping UI prototype built with Kotlin and Jetpack Compose. It explores a product catalogue, product details, a wishlist and a shopping basket.
 
-The application utilizes Jetpack Compose's `remember` state for managing UI state within the scope of a composition. However, in the actual implementation,
-each screen would be backed by a ViewModel that survives configuration changes and handles business logic.
-The ViewModels interact with a repository layer for data persistence, ensuring data consistency beyond recomposition.
+This is a demonstration, not a production storefront. The checkout button currently clears the in-memory basket; it does not process payments or place orders.
 
-## Prerequisites
+## What's included
 
-- Android SDK version XX or higher
-- Android Studio Hedgehog | 2023.1.1
-- Other necessary libraries or tools
-
-## Features
-
-- **Product Listing**: The app displays a list of products, allowing users to browse through their options easily.
-- **Shopping Cart**: Users can add products to a shopping cart, view the items in their cart, and modify the quantity of each item.
-- **Checkout Process**: The app provides a seamless checkout process, where users can review their order and proceed to payment.
-
-## Screenshots
-
-[TODO]
+- Catalogue loading through Retrofit and a repository.
+- Product detail, wishlist and basket screens built with Compose.
+- Compose Navigation for moving between screens.
+- A catalogue ViewModel exposing loading, success and error states.
+- Unit tests for the catalogue ViewModel and fetch use case.
 
 ## Architecture
 
-The application follows a robust and maintainable architecture with the following components:
+The catalogue uses `CatalogueViewModel`, `ClothesRepository` and `ClothesStoreApi`. Dependency providers are defined in `AppModule`, with Retrofit and Moshi used for the remote catalogue.
 
-- **ViewModels**: Each screen in the application is backed by a ViewModel, which survives configuration changes and handles business logic.
-- **Use Cases**: The application uses Use Cases for defining the operations that can be performed in the system. These Use Cases encapsulate all the business rules for each operation.
-- **Repository**: The ViewModels interact with a repository layer for data persistence, ensuring data consistency beyond recomposition.
+Wishlist and basket data are currently held in Compose `remember` state in `MainScreenView`. They are not backed by persistent storage and should not be treated as saved orders or durable shopping sessions.
 
-## Installation
+Useful entry points:
 
-1. Clone the repository: `git clone https://github.com/AndriaNjoku/Compose-Shopping-App.git`
-2. Open the project in Android Studio Hedgehog | 2023.1.1
-3. Sync the project with Gradle Files
+- [Main screen and navigation](app/src/main/java/com/andria/myshoppingapp/components/MainScreenView.kt)
+- [Catalogue ViewModel](app/src/main/java/com/andria/myshoppingapp/CatalogueViewModel.kt)
+- [API and dependency configuration](app/src/main/java/com/andria/myshoppingapp/di/AppModule.kt)
+- [Basket UI](app/src/main/java/com/andria/myshoppingapp/components/BasketScreenView.kt)
 
-## Usage
+## Run locally
 
-After installation, you can run the app on an emulator or a real device connected to your system. This application is designed to provide a seamless online shopping experience with a user-friendly interface.
+### Requirements
 
+- Android Studio Hedgehog (2023.1.1) or a compatible version supporting Android Gradle Plugin 8.2.2.
+- JDK 17.
+- Android SDK Platform 34.
+- An emulator or Android device running Android 9 (API 28) or later.
+- Internet access for the remote catalogue and product images. Catalogue availability depends on the configured external API.
+
+### Setup
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/AndriaNjoku/ComposeShoppingApp.git
+   cd ComposeShoppingApp
+   ```
+
+2. Open the repository root in Android Studio.
+3. Set `sdk.dir` in `local.properties` to your own Android SDK location. The checked-in value is machine-specific.
+4. Sync Gradle, select the `app` configuration, and run it on your device or emulator.
+
+Build a debug APK:
+
+```bash
+./gradlew :app:assembleDebug
+```
+
+Run the JVM unit tests:
+
+```bash
+./gradlew :app:testDebugUnitTest
+```
+
+On Windows, replace `./gradlew` with `gradlew.bat`.
+
+Build and SDK versions are defined in [the app configuration](app/build.gradle.kts) and [root build configuration](build.gradle.kts). These commands are provided for local use; this documentation update does not establish a verified build, passing test run or working external API.
